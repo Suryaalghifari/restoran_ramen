@@ -37,6 +37,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 <head>
     <meta charset="UTF-8">
     <title>Login Kasir</title>
+    <link rel="icon" type="image/png" href="/restoran_ramen/public/img/logoweb.png">
     <link rel="stylesheet" href="../../sb-admin/css/sb-admin-2.min.css">
     <link rel="stylesheet" href="../../sb-admin/vendor/fontawesome-free/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>

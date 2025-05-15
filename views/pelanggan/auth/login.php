@@ -45,6 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="UTF-8">
     <title>Login Pelanggan</title>
+    <link rel="icon" type="image/png" href="/restoran_ramen/public/img/logoweb.png">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="../../../sb-admin/css/sb-admin-2.min.css">
     <link rel="stylesheet" href="../../../sb-admin/vendor/fontawesome-free/css/all.min.css">
@@ -96,6 +97,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         text: <?= json_encode($_SESSION['login_error']) ?>
     });
 </script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+  const logoutMsg = localStorage.getItem('logout_success');
+  if (logoutMsg) {
+    Swal.fire({
+      icon: 'success',
+      title: 'Logout Berhasil',
+      text: logoutMsg,
+    });
+    localStorage.removeItem('logout_success'); // Hapus setelah ditampilkan
+  }
+</script>
+
 <?php unset($_SESSION['login_error']); endif; ?>
 </body>
 </html>

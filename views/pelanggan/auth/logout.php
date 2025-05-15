@@ -1,12 +1,11 @@
 <?php
 session_start();
-
-// ✅ Hapus session khusus pelanggan
 unset($_SESSION['pelanggan_id']);
 unset($_SESSION['pelanggan_nama']);
+?>
 
-// ✅ Tambahan opsional: jika hanya pelanggan yang login
-// session_destroy(); // (opsional, gunakan jika tidak ada session lain yang dipakai)
-
-header("Location: login.php");
-exit;
+<!-- Set pesan logout ke localStorage dan redirect ke index pelanggan -->
+<script>
+  localStorage.setItem('logout_success', 'Sampai jumpa kembali!');
+  window.location.href = '../index.php';
+</script>

@@ -1,11 +1,7 @@
 <?php
-require_once '../../config/base_url.php'; // ini dulu
-include_once 'produk_dinamis.php';        // baru yang lain
+require_once '../../config/base_url.php';
+include_once 'produk_dinamis.php';
 include_once 'header.php';
-
-
-
-
 ?>
 
 <!-- HERO SECTION -->
@@ -73,10 +69,12 @@ include_once 'header.php';
   </div>
 </section>
 
-
 <?php include_once 'footer.php'; ?>
+
+<!-- SWEETALERT -->
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
+  // ✅ Login Success
   const successName = localStorage.getItem('login_success');
   if (successName) {
     Swal.fire({
@@ -88,9 +86,30 @@ include_once 'header.php';
     });
     localStorage.removeItem('login_success');
   }
+
+  // ✅ Logout Success
+  const logoutMsg = localStorage.getItem('logout_success');
+  if (logoutMsg) {
+    Swal.fire({
+      icon: 'success',
+      title: 'Logout Berhasil',
+      text: logoutMsg,
+      timer: 2500,
+      showConfirmButton: false
+    });
+    localStorage.removeItem('logout_success');
+  }
+
+  // ✅ Akses Ditolak (jika belum login & coba checkout)
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.get('akses') === 'ditolak') {
+    Swal.fire({
+      icon: 'warning',
+      title: 'Akses Ditolak',
+      text: 'Silakan login terlebih dahulu untuk melakukan checkout.',
+      confirmButtonText: 'Login Sekarang'
+    }).then(() => {
+      window.location.href = 'auth/login.php';
+    });
+  }
 </script>
-<?php if (isset($_GET['logout'])): ?>
-<script>
-Swal.fire("Logout Berhasil", "Sampai jumpa kembali!", "success");
-</script>
-<?php endif; ?>

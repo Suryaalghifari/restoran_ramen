@@ -4,20 +4,37 @@ require_once '../../../config/koneksi.php';
 require_once '../../../config/base_url.php';
 
 if (!isset($_SESSION['pelanggan_id'])) {
-    echo "
+  echo "
+  <!DOCTYPE html>
+  <html lang='id'>
+  <head>
+    <meta charset='UTF-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+    <title>Akses Ditolak</title>
     <script src='https://cdn.jsdelivr.net/npm/sweetalert2@11'></script>
+  </head>
+  <body>
     <script>
       Swal.fire({
         icon: 'warning',
         title: 'Akses Ditolak',
-        text: 'Silakan login terlebih dahulu untuk checkout',
-        confirmButtonText: 'Login Sekarang'
-      }).then(() => {
-        window.location.href = '../auth/login.php';
+        text: 'Silakan login terlebih dahulu untuk checkout.',
+        showCancelButton: true,
+        confirmButtonText: 'Login Sekarang',
+        cancelButtonText: 'Kembali'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          window.location.href = '../auth/login.php';
+        } else {
+          window.location.href = '../index.php';
+        }
       });
-    </script>";
-    exit;
+    </script>
+  </body>
+  </html>";
+  exit;
 }
+
 
 $pelanggan_id = $_SESSION['pelanggan_id'];
 $pelanggan = mysqli_fetch_assoc(mysqli_query($conn, "SELECT * FROM pelanggan WHERE id = $pelanggan_id"));

@@ -49,6 +49,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
   <meta charset="UTF-8">
   <title>Registrasi Pelanggan</title>
+  <link rel="icon" type="image/png" href="/restoran_ramen/public/img/logoweb.png">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link href="../../../sb-admin/vendor/fontawesome-free/css/all.min.css" rel="stylesheet">
   <link href="../../../sb-admin/css/sb-admin-2.min.css" rel="stylesheet">

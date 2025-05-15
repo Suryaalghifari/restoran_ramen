@@ -3,7 +3,7 @@ if (session_status() === PHP_SESSION_NONE) session_start();
 require_once __DIR__ . '/../../config/koneksi.php';
 require_once __DIR__ . '/../../config/base_url.php';
 
-// 🧪 DEBUG: Cek apakah session aktif dan apa isinya
+$pelanggan = null; // ✅ Tambahkan inisialisasi default
 
 if (isset($_SESSION['pelanggan_id'])) {
     $id = $_SESSION['pelanggan_id'];
@@ -12,12 +12,13 @@ if (isset($_SESSION['pelanggan_id'])) {
     $result = mysqli_query($conn, $query);
 
     if (!$result) {
-        die("Query gagal: " . mysqli_error($conn));  // ✅ Lihat pesan error sebenarnya
+        die("Query gagal: " . mysqli_error($conn));  // Debug jika query gagal
     }
 
     $pelanggan = mysqli_fetch_assoc($result);
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="id">
 <head>
