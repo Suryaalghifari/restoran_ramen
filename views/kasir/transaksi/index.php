@@ -108,12 +108,12 @@ $produk = mysqli_query($conn, "
 
                         <div class="form-group">
                             <label>Jumlah Dibayar</label>
-                            <input type="text" id="jumlah_dibayar" class="form-control" autocomplete="off" required>
+                            <input type="text" id="jumlah_dibayar" class="form-control text-right" autocomplete="off" required>
                         </div>
 
                         <div class="form-group">
                             <label>Kembalian</label>
-                            <input type="text" id="kembalian" class="form-control" readonly>
+                            <input type="text" id="kembalian" class="form-control text-right" readonly>
                         </div>
 
                         <button type="submit" class="btn btn-success btn-block">Simpan Transaksi</button>
@@ -130,11 +130,11 @@ $produk = mysqli_query($conn, "
 let keranjang = [];
 
 function parseNumber(str) {
-    return parseInt(str.replace(/[\D]/g, '')) || 0;
+    return parseInt(str.replace(/[^\d]/g, '')) || 0;
 }
 
 function tambahKeKeranjang(produk) {
-    produk.produk_id = parseInt(produk.id);
+    produk.produk_id = parseInt(produk.produk_id || produk.id);
     let index = keranjang.findIndex(p => p.produk_id === produk.produk_id);
     if (index !== -1) {
         if (keranjang[index].jumlah < produk.stok) {
@@ -200,17 +200,18 @@ function renderKeranjang() {
                 <td><button type="button" class="btn btn-sm btn-danger" onclick="hapusDariKeranjang(${p.produk_id})">x</button></td>
             </tr>`;
     });
-    document.getElementById("total").innerText = "Rp " + total.toLocaleString();
+    document.getElementById("total").innerText = "Rp " + total.toLocaleString('id-ID');
     document.getElementById("total_hidden").value = total;
     document.getElementById("data_keranjang").value = JSON.stringify(keranjang);
 }
 
+// Format input jumlah dibayar & hitung kembalian
 document.getElementById('jumlah_dibayar').addEventListener('input', function () {
     const bayar = parseNumber(this.value);
     const total = parseNumber(document.getElementById('total').innerText);
     const kembali = bayar - total;
-    this.value = bayar.toLocaleString('id-ID', { style: 'currency', currency: 'IDR' });
-    document.getElementById('kembalian').value = kembali >= 0 ? 'Rp ' + kembali.toLocaleString() : '-';
+    this.value = bayar.toLocaleString('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 });
+    document.getElementById('kembalian').value = kembali >= 0 ? 'Rp ' + kembali.toLocaleString('id-ID') : '-';
 });
 
 document.getElementById("formTransaksi").addEventListener("submit", function(e) {
@@ -244,7 +245,7 @@ document.getElementById("formTransaksi").addEventListener("submit", function(e) 
     .then(data => {
         if (data.status === 'success') {
             Swal.fire("Berhasil", data.message, "success").then(() => {
-                window.location.href = "../riwayat_transaksi.php";
+                window.location.href = "../histori/index.php";
             });
         } else {
             Swal.fire("Gagal", data.message, "error");

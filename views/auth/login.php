@@ -4,14 +4,26 @@ require_once '../../config/koneksi.php';
 
 $error = '';
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $username = $_POST['username'];
+    $username = trim($_POST['username']);
     $password = $_POST['password'];
 
-    $query = mysqli_query($conn, "SELECT * FROM users WHERE username = '$username' AND role = 'kasir'");
-    $user = mysqli_fetch_assoc($query);
+    // Cari user kasir dengan username
+    $query = mysqli_prepare($conn, "SELECT id, nama_lengkap, username, password, role, foto FROM users WHERE username = ? AND role = 'kasir'");
+    mysqli_stmt_bind_param($query, 's', $username);
+    mysqli_stmt_execute($query);
+    $result = mysqli_stmt_get_result($query);
+    $user = mysqli_fetch_assoc($result);
 
     if ($user && password_verify($password, $user['password'])) {
-        $_SESSION['user'] = $user;
+        // Simpan hanya data yang dibutuhkan ke dalam session
+        $_SESSION['user'] = [
+            'id' => $user['id'],
+            'nama_lengkap' => $user['nama_lengkap'],
+            'username' => $user['username'],
+            'role' => $user['role'],
+            'foto' => $user['foto'] ?? 'default.png' // fallback kalau NULL
+        ];
+        
         $_SESSION['success_login'] = "Selamat datang, {$user['nama_lengkap']}!";
         header("Location: ../kasir/index.php");
         exit;
@@ -20,7 +32,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -48,6 +59,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                             </div>
                             <button class="btn btn-primary btn-block">Login</button>
                         </form>
+
                         <?php if ($error): ?>
                             <script>
                                 Swal.fire({

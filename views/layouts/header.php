@@ -11,7 +11,7 @@ $user = $_SESSION['user'];
 <head>
     <meta charset="UTF-8">
     <title>Dashboard - Kasir</title>
-    <link rel="icon" type="image/png" href="/restoran_ramen/public/img/logo.png">
+    <link rel="icon" type="image/png" href="/restoran_ramen/public/img/logoweb.png">
 
     <!-- Google Fonts: Poppins -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">

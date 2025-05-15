@@ -12,10 +12,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $gambar_name = null;
     if (!empty($_FILES['gambar']['name'])) {
         $ext = pathinfo($_FILES['gambar']['name'], PATHINFO_EXTENSION);
-        $gambar_name = uniqid('produk_') . '.' . $ext;
+        $nama_slug = strtolower(str_replace(' ', '_', $nama)); // buat nama file dari nama produk
+        $gambar_name = $nama_slug . '.' . $ext;
         $upload_path = __DIR__ . '/../../../public/img/produk/' . $gambar_name;
         move_uploaded_file($_FILES['gambar']['tmp_name'], $upload_path);
     }
+    
 
     $stmt = mysqli_prepare($conn, "
         INSERT INTO produk (nama_produk, kategori_id, harga, stok, deskripsi, gambar) 
